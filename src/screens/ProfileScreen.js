@@ -1,4 +1,6 @@
 import React from 'react';
+import { useRouter } from 'expo-router';
+import { useAuth } from '../context/AuthContext';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -12,7 +14,9 @@ const options = [
   { id: '5', label: 'Ajuda e suporte', icon: 'help-circle-outline' },
 ];
 
-export default function ProfileScreen({ navigation }) {
+export default function ProfileScreen() {
+  const router = useRouter();
+  const { user, signOut } = useAuth();
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.header}>
@@ -20,7 +24,7 @@ export default function ProfileScreen({ navigation }) {
           <Ionicons name="person" size={34} color={colors.background} />
         </View>
         <Text style={styles.name}>SaborExpress</Text>
-  <Text style={styles.email}>Lucas@exemplo.com</Text>
+  <Text style={styles.email}>{user?.email || 'Convidado'}</Text>
       </View>
 
       <View style={styles.optionsList}>
@@ -37,7 +41,7 @@ export default function ProfileScreen({ navigation }) {
 
       <TouchableOpacity
         style={styles.logoutButton}
-        onPress={() => navigation.navigate('Onboarding')}
+        onPress={() => { signOut(); router.replace('/(auth)/login'); }}
       >
         <Ionicons name="log-out-outline" size={20} color={colors.danger} />
         <Text style={styles.logoutText}>Sair</Text>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useRouter } from 'expo-router';
+import { useAuth } from '../context/AuthContext';
 import {
   StyleSheet,
   Text,
@@ -14,11 +15,13 @@ import colors from '../theme/colors';
 
 export default function LoginScreen() {
   const router = useRouter();
+  const { signIn } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   function handleLogin() {
     // Mock de autenticação: qualquer preenchimento entra no app.
+    signIn(email);
     router.replace('/(app)/(tabs)');
   }
 
