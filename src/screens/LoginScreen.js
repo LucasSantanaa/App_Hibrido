@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRouter } from 'expo-router';
 import {
   StyleSheet,
   Text,
@@ -11,13 +12,14 @@ import {
 import { Ionicons } from '@expo/vector-icons';
 import colors from '../theme/colors';
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen() {
+  const router = useRouter();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   function handleLogin() {
     // Mock de autenticação: qualquer preenchimento entra no app.
-    navigation.replace('Main');
+    router.replace('/(app)/(tabs)');
   }
 
   return (

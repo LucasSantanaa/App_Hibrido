@@ -1,10 +1,12 @@
 import React from 'react';
+import { useRouter } from 'expo-router';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import colors from '../theme/colors';
 
-export default function OrderConfirmationScreen({ navigation }) {
+export default function OrderConfirmationScreen() {
+  const router = useRouter();
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.iconCircle}>
@@ -24,7 +26,7 @@ export default function OrderConfirmationScreen({ navigation }) {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate('HomeTab')}
+        onPress={() => router.replace('/(app)/(tabs)')}
       >
         <Text style={styles.buttonText}>Voltar para o início</Text>
       </TouchableOpacity>

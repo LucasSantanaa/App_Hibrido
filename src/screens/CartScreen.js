@@ -1,16 +1,18 @@
 import React from 'react';
+import { useRouter } from 'expo-router';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useCart } from '../context/CartContext';
 import colors from '../theme/colors';
 
-export default function CartScreen({ navigation }) {
+export default function CartScreen() {
+  const router = useRouter();
   const { items, removeFromCart, total, clearCart } = useCart();
 
   function handleCheckout() {
     clearCart();
-    navigation.navigate('OrderConfirmation');
+    router.replace('/order-confirmation');
   }
 
   if (items.length === 0) {

@@ -1,9 +1,11 @@
 import React from 'react';
+import { useRouter } from 'expo-router';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import colors from '../theme/colors';
 
-export default function OnboardingScreen({ navigation }) {
+export default function OnboardingScreen() {
+  const router = useRouter();
   return (
     <View style={styles.container}>
       <View style={styles.logoCircle}>
@@ -24,7 +26,7 @@ export default function OnboardingScreen({ navigation }) {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.replace('Login')}
+        onPress={() => router.replace('/(auth)/login')}
       >
         <Text style={styles.buttonText}>Começar</Text>
         <Ionicons name="arrow-forward" size={20} color={colors.background} />
