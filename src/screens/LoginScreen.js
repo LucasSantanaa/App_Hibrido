@@ -22,7 +22,7 @@ export default function LoginScreen() {
   function handleLogin() {
     // Mock de autenticação: qualquer preenchimento entra no app.
     signIn(email);
-    router.replace('/(app)/(tabs)');
+    router.replace('/');
   }
 
   return (

@@ -1,6 +1,12 @@
 import React from 'react';
-import { Stack } from 'expo-router';
+import { Redirect, Stack } from 'expo-router';
+import { useAuth } from '../../src/context/AuthContext';
 
-export default function AppLayout() {
+export default function ProtectedLayout() {
+  const { user } = useAuth();
+
+  // Protege todas as rotas do grupo (app).
+  if (!user) return <Redirect href="/(auth)/login" />;
+
   return <Stack screenOptions={{ headerShown: false }} />;
 }
