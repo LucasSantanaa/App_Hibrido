@@ -1,98 +1,75 @@
-# SaborExpress — Mock de app híbrido (Expo)
+# SaborExpress — P1 com Expo Router
 
-Mock de um app de delivery de comida, feito em **React Native + Expo**, como
-trabalho da disciplina de Aplicativos Híbridos.
+Aplicativo de delivery desenvolvido em React Native + Expo. Esta versão adapta a navegação do P1 para o **Expo Router**, conforme a atividade da Aula 08.
 
-## Requisitos do trabalho atendidos
+## O que foi implementado
 
-- [x] App escolhido e "mocado" (recriado visualmente) do zero em Expo.
-- [x] 7 telas (mínimo pedido era 6):
-  1. Onboarding (boas-vindas)
-  2. Login
-  3. Home (listagem + categorias)
-  4. Detalhes do produto
-  5. Carrinho
-  6. Confirmação de pedido
-  7. Perfil
-- [x] Mais de 20 commits, cada um representando uma etapa do desenvolvimento
-      (ver `git log --oneline`).
-- [x] Projeto em um único repositório.
+- Rotas organizadas por arquivos dentro de `app/`.
+- Grupo `(auth)` para Onboarding e Login.
+- Grupo `(app)` protegido por autenticação.
+- `AuthContext` com `AuthProvider`, `signIn` e `signOut`.
+- Redirecionamento para o Login quando não existe usuário autenticado.
+- Login com `router.replace()` para não voltar à tela de login pelo botão voltar.
+- Abas Início, Carrinho e Perfil com `Tabs`.
+- Rota dinâmica `details/[id].tsx`, que recebe o identificador com `useLocalSearchParams()`.
+- Logout no Perfil, limpando a sessão e voltando ao Login.
+- Contexto e funcionalidades originais do carrinho preservados.
 
-## Como rodar o projeto
+A autenticação continua sendo simulada (mock), como no P1 original: qualquer preenchimento ou acesso como convidado permite entrar.
 
-Pré-requisitos: Node.js LTS instalado e o app **Expo Go** no celular
-(ou um emulador Android/iOS configurado).
+## Estrutura principal
+
+```text
+app/
+├── _layout.tsx
+├── index.tsx
+├── (auth)/
+│   ├── _layout.tsx
+│   ├── onboarding.tsx
+│   └── login.tsx
+└── (app)/
+    ├── _layout.tsx
+    ├── order-confirmation.tsx
+    ├── details/
+    │   └── [id].tsx
+    └── (tabs)/
+        ├── _layout.tsx
+        ├── index.tsx
+        ├── cart.tsx
+        └── profile.tsx
+
+src/
+├── components/
+├── context/
+│   ├── AuthContext.js
+│   └── CartContext.js
+├── data/
+├── screens/
+└── theme/
+```
+
+## Como executar
+
+Com Node.js LTS instalado:
 
 ```bash
-# 1. Instale as dependências
 npm install
-
-# 2. Alinhe as dependências com o SDK instalado
-npx expo install --fix
-
-# 3. Rode o projeto
-npx expo start
+npx expo install expo-router react-native-safe-area-context react-native-screens expo-linking expo-constants expo-status-bar
+npx expo start -c
 ```
 
-Depois é só escanear o QR Code com o app **Expo Go** (Android) ou a câmera
-(iOS), ou apertar `a` / `i` no terminal para abrir em um emulador.
+Abra o projeto pelo Expo Go ou em um emulador compatível com o SDK 58.
 
-> **Erro de versão incompatível no Expo Go?** O Expo Go instalado no celular
-> precisa ser compatível com o SDK do projeto (`57`). Atualize o Expo Go ou
-> use uma versão do projeto compatível com o aplicativo instalado. Para
-> reinstalar as dependências, remova apenas `node_modules`, rode `npm install`
-> e depois `npx expo install --fix`.
+## Fluxo para testar
 
-> **Erro `Cannot read properties of undefined (reading 'transformFile')`?**
-> Confira se `babel-preset-expo` está instalado e se as dependências estão
-> alinhadas com o SDK 57. Execute `npm install` e, em seguida,
-> `npx expo install --fix`. O projeto já inclui o `metro.config.js` padrão
-> exigido pelo Expo.
+1. Abra o app: a tela de Onboarding aparece.
+2. Toque em Começar e depois entre com e-mail/senha ou como convidado.
+3. O app abre a Home com as abas Início, Carrinho e Perfil.
+4. Toque em um produto: o detalhe abre pela rota `/details/[id]`.
+5. Use o botão de voltar para retornar à lista.
+6. No Perfil, toque em Sair: a sessão é limpa e o Login é exibido.
+7. Tente abrir uma rota do grupo `(app)` sem estar logado: o app redireciona para o Login.
 
-## Estrutura do projeto
+## Observação
 
-```
-app-hibrido-mock/
-├── App.js                        # ponto de entrada do app
-├── app.json                      # configurações do Expo (ícone, splash, etc.)
-├── assets/                       # ícones e splash screen
-└── src/
-    ├── theme/colors.js           # paleta de cores do app
-    ├── data/mockData.js          # dados fake de produtos/categorias
-    ├── context/CartContext.js    # estado global do carrinho (Context API)
-    ├── components/FoodCard.js    # card reutilizável de produto
-    ├── screens/                  # todas as telas do app
-    │   ├── OnboardingScreen.js
-    │   ├── LoginScreen.js
-    │   ├── HomeScreen.js
-    │   ├── DetailsScreen.js
-    │   ├── CartScreen.js
-    │   ├── OrderConfirmationScreen.js
-    │   └── ProfileScreen.js
-    └── navigation/                # configuração de rotas
-        ├── HomeStack.js
-        ├── CartStack.js
-        ├── MainTabs.js
-        └── AppNavigator.js
-```
-
-##  Fluxo de navegação
-
-```
-Onboarding → Login → MainTabs (abas inferiores)
-                        ├── HomeTab (Home → Details)
-                        ├── CartTab (Cart → OrderConfirmation)
-                        └── ProfileTab
-```
-
-## Enviando para o GitHub
-
-```bash
-git branch -M main
-git push -u origin main
-```
-
-
-## Aluno
-
-- Aluno: Lucas de Santana Pulcherio
+O Expo Router é baseado na estrutura de arquivos. Os nomes entre parênteses, como `(auth)` e `(app)`, organizam as rotas sem fazer parte do endereço. O arquivo `_layout.tsx` define o navegador do grupo.

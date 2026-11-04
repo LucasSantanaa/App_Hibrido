@@ -1,24 +1,39 @@
 import React, { useState } from 'react';
+import { useRouter } from 'expo-router';
+import { products } from '../data/mockData';
 import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { useCart } from '../context/CartContext';
 import colors from '../theme/colors';
 
-export default function DetailsScreen({ route, navigation }) {
-  const { product } = route.params;
+export default function DetailsScreen({ productId }) {
+  const router = useRouter();
+  const product = products.find((item) => item.id === String(productId));
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
 
   function handleAdd() {
+    if (!product) return;
     addToCart(product, quantity);
-    navigation.navigate('CartTab');
+    router.push('/(app)/(tabs)/cart');
+  }
+
+  if (!product) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <TouchableOpacity onPress={() => router.back()} style={styles.topBar}>
+          <Ionicons name="arrow-back" size={24} color={colors.text} />
+        </TouchableOpacity>
+        <Text style={styles.name}>Produto não encontrado</Text>
+      </SafeAreaView>
+    );
   }
 
   return (
     <SafeAreaView style={styles.container} edges={['top']}>
       <View style={styles.topBar}>
-        <TouchableOpacity onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={24} color={colors.text} />
         </TouchableOpacity>
       </View>

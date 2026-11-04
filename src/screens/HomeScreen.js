@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useRouter } from 'expo-router';
 import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -6,7 +7,8 @@ import FoodCard from '../components/FoodCard';
 import { categories, products } from '../data/mockData';
 import colors from '../theme/colors';
 
-export default function HomeScreen({ navigation }) {
+export default function HomeScreen() {
+  const router = useRouter();
   const [activeCategory, setActiveCategory] = useState('c1');
 
   const filteredProducts =
@@ -67,7 +69,7 @@ export default function HomeScreen({ navigation }) {
         renderItem={({ item }) => (
           <FoodCard
             product={item}
-            onPress={() => navigation.navigate('Details', { product: item })}
+            onPress={() => router.push(`/details/${item.id}`)}
           />
         )}
       />
