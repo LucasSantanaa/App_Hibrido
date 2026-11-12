@@ -4,6 +4,18 @@ import { Ionicons } from '@expo/vector-icons';
 import { useCart } from '../../../src/context/CartContext';
 import colors from '../../../src/theme/colors';
 
+const icons: Record<
+  string,
+  {
+    active: React.ComponentProps<typeof Ionicons>['name'];
+    inactive: React.ComponentProps<typeof Ionicons>['name'];
+  }
+> = {
+  index: { active: 'home', inactive: 'home-outline' },
+  cart: { active: 'cart', inactive: 'cart-outline' },
+  profile: { active: 'person', inactive: 'person-outline' },
+};
+
 export default function TabsLayout() {
   const { itemCount } = useCart();
 
@@ -14,9 +26,14 @@ export default function TabsLayout() {
       tabBarInactiveTintColor: colors.textLight,
       tabBarStyle: { height: 62, paddingBottom: 8, paddingTop: 8 },
       tabBarIcon: ({ color, size, focused }) => {
-        const icons = { index: 'home', cart: 'cart', profile: 'person' };
-        const icon = icons[route.name] || 'ellipse';
-        return <Ionicons name={focused ? icon : `${icon}-outline`} size={size} color={color} />;
+        const icon = icons[route.name] || { active: 'ellipse', inactive: 'ellipse-outline' };
+        return (
+          <Ionicons
+            name={focused ? icon.active : icon.inactive}
+            size={size}
+            color={String(color)}
+          />
+        );
       },
     })}>
       <Tabs.Screen name="index" options={{ title: 'Início' }} />

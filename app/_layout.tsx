@@ -5,6 +5,10 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { AuthProvider } from '../src/context/AuthContext';
 import { CartProvider } from '../src/context/CartContext';
+import { FavoritesProvider } from '../src/context/FavoritesContext';
+import { AddressProvider } from '../src/context/AddressContext';
+import { OrdersProvider } from '../src/context/OrdersContext';
+import RootNavigator from '../src/components/RootNavigator';
 
 export default function RootLayout() {
   return (
@@ -12,12 +16,13 @@ export default function RootLayout() {
       <SafeAreaProvider>
         <AuthProvider>
           <CartProvider>
-            <StatusBar style="dark" />
-            <Stack screenOptions={{ headerShown: false }}>
-              <Stack.Screen name="index" />
-              <Stack.Screen name="(auth)" />
-              <Stack.Screen name="(app)" />
-            </Stack>
+            <FavoritesProvider>
+              <AddressProvider>
+                <OrdersProvider>
+                  <RootNavigator />
+                </OrdersProvider>
+              </AddressProvider>
+            </FavoritesProvider>
           </CartProvider>
         </AuthProvider>
       </SafeAreaProvider>

@@ -1,75 +1,35 @@
-# SaborExpress — P1 com Expo Router
+# SaborExpress — P2 com Expo Router
 
-Aplicativo de delivery desenvolvido em React Native + Expo. Esta versão adapta a navegação do P1 para o **Expo Router**, conforme a atividade da Aula 08.
+Aplicativo de delivery feito em React Native e Expo a partir do projeto P1. A navegação usa Expo Router, o cardápio consulta a API pública DummyJSON Recipes e os dados do usuário ficam no armazenamento local com AsyncStorage (sem SQLite).
 
-## O que foi implementado
+## Funcionalidades
 
-- Rotas organizadas por arquivos dentro de `app/`.
-- Grupo `(auth)` para Onboarding e Login.
-- Grupo `(app)` protegido por autenticação.
-- `AuthContext` com `AuthProvider`, `signIn` e `signOut`.
-- Redirecionamento para o Login quando não existe usuário autenticado.
-- Login com `router.replace()` para não voltar à tela de login pelo botão voltar.
-- Abas Início, Carrinho e Perfil com `Tabs`.
-- Rota dinâmica `details/[id].tsx`, que recebe o identificador com `useLocalSearchParams()`.
-- Logout no Perfil, limpando a sessão e voltando ao Login.
-- Contexto e funcionalidades originais do carrinho preservados.
+- Onboarding, login demonstrativo e acesso como convidado.
+- Busca de receitas e navegação por categorias.
+- Detalhes da receita com ingredientes, imagens e opção de favoritar.
+- Favoritos e carrinho persistentes entre reinicializações.
+- Cadastro e seleção de endereços.
+- Fluxo de checkout, escolha de pagamento demonstrativo e confirmação.
+- Histórico e detalhes de pedidos salvos localmente.
+- Perfil, configurações e suporte.
+- Mensagem e catálogo local de contingência quando a API não está disponível.
 
-A autenticação continua sendo simulada (mock), como no P1 original: qualquer preenchimento ou acesso como convidado permite entrar.
+O projeto oferece mais de 12 telas navegáveis: onboarding, login, início, busca, categorias, receitas por categoria, detalhes, favoritos, carrinho, endereços, formulário de endereço, entrega, pagamento, confirmação, pedidos, detalhes do pedido, perfil, configurações e suporte.
 
-## Estrutura principal
+## Tecnologias
 
-```text
-app/
-├── _layout.tsx
-├── index.tsx
-├── (auth)/
-│   ├── _layout.tsx
-│   ├── onboarding.tsx
-│   └── login.tsx
-└── (app)/
-    ├── _layout.tsx
-    ├── order-confirmation.tsx
-    ├── details/
-    │   └── [id].tsx
-    └── (tabs)/
-        ├── _layout.tsx
-        ├── index.tsx
-        ├── cart.tsx
-        └── profile.tsx
+- Expo SDK 58, React Native e Expo Router.
+- StyleSheet e layouts Flexbox.
+- API: [DummyJSON Recipes](https://dummyjson.com/docs/recipes).
+- Persistência local: `@react-native-async-storage/async-storage`.
 
-src/
-├── components/
-├── context/
-│   ├── AuthContext.js
-│   └── CartContext.js
-├── data/
-├── screens/
-└── theme/
-```
+O login e o checkout são demonstrativos; o app não processa pagamentos reais. Os dados armazenados localmente são sessão, carrinho, favoritos, endereços, preferências e pedidos.
 
 ## Como executar
 
-Com Node.js LTS instalado:
-
 ```bash
 npm install
-npx expo install expo-router react-native-safe-area-context react-native-screens expo-linking expo-constants expo-status-bar
-npx expo start -c
+npx expo start
 ```
 
-Abra o projeto pelo Expo Go ou em um emulador compatível com o SDK 58.
-
-## Fluxo para testar
-
-1. Abra o app: a tela de Onboarding aparece.
-2. Toque em Começar e depois entre com e-mail/senha ou como convidado.
-3. O app abre a Home com as abas Início, Carrinho e Perfil.
-4. Toque em um produto: o detalhe abre pela rota `/details/[id]`.
-5. Use o botão de voltar para retornar à lista.
-6. No Perfil, toque em Sair: a sessão é limpa e o Login é exibido.
-7. Tente abrir uma rota do grupo `(app)` sem estar logado: o app redireciona para o Login.
-
-## Observação
-
-O Expo Router é baseado na estrutura de arquivos. Os nomes entre parênteses, como `(auth)` e `(app)`, organizam as rotas sem fazer parte do endereço. O arquivo `_layout.tsx` define o navegador do grupo.
+Abra pelo Expo Go compatível com o SDK do projeto ou use um emulador.
