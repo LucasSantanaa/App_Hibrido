@@ -7,11 +7,12 @@ import { Ionicons } from '@expo/vector-icons';
 import colors from '../theme/colors';
 
 const options = [
-  { id: '1', label: 'Meus pedidos', icon: 'receipt-outline' },
-  { id: '2', label: 'Endereços', icon: 'location-outline' },
-  { id: '3', label: 'Formas de pagamento', icon: 'card-outline' },
-  { id: '4', label: 'Favoritos', icon: 'heart-outline' },
-  { id: '5', label: 'Ajuda e suporte', icon: 'help-circle-outline' },
+  { id: 'orders', label: 'Meus pedidos', icon: 'receipt-outline', route: '/orders' },
+  { id: 'addresses', label: 'Endereços', icon: 'location-outline', route: '/addresses' },
+  { id: 'payments', label: 'Pagamento', icon: 'card-outline', route: '/payment-methods' },
+  { id: 'favorites', label: 'Favoritos', icon: 'heart-outline', route: '/favorites' },
+  { id: 'settings', label: 'Configurações', icon: 'settings-outline', route: '/settings' },
+  { id: 'help', label: 'Ajuda e suporte', icon: 'help-circle-outline', route: '/support' },
 ];
 
 export default function ProfileScreen() {
@@ -29,7 +30,11 @@ export default function ProfileScreen() {
 
       <View style={styles.optionsList}>
         {options.map((option) => (
-          <TouchableOpacity key={option.id} style={styles.optionRow}>
+          <TouchableOpacity
+            key={option.id}
+            style={styles.optionRow}
+            onPress={() => router.push(option.route)}
+          >
             <View style={styles.optionLeft}>
               <Ionicons name={option.icon} size={20} color={colors.primary} />
               <Text style={styles.optionLabel}>{option.label}</Text>
