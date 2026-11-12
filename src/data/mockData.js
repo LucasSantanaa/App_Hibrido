@@ -21,6 +21,7 @@ export const products = [
     rating: 4.8,
     time: '25-35 min',
     icon: 'fast-food',
+    categoryName: 'Lanches',
   },
   {
     id: '2',
@@ -33,6 +34,7 @@ export const products = [
     rating: 4.9,
     time: '35-45 min',
     icon: 'pizza',
+    categoryName: 'Pizzas',
   },
   {
     id: '3',
@@ -45,6 +47,7 @@ export const products = [
     rating: 4.7,
     time: '15-25 min',
     icon: 'ice-cream',
+    categoryName: 'Doces',
   },
   {
     id: '4',
@@ -56,6 +59,7 @@ export const products = [
     rating: 4.6,
     time: '10-15 min',
     icon: 'cafe',
+    categoryName: 'Bebidas',
   },
   {
     id: '5',
@@ -67,6 +71,7 @@ export const products = [
     rating: 4.5,
     time: '20-30 min',
     icon: 'fast-food',
+    categoryName: 'Lanches',
   },
   {
     id: '6',
@@ -78,5 +83,6 @@ export const products = [
     rating: 4.7,
     time: '35-45 min',
     icon: 'pizza',
+    categoryName: 'Pizzas',
   },
 ];
