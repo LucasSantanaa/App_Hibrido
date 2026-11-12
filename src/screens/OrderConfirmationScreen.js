@@ -1,5 +1,5 @@
 import React from 'react';
-import { useRouter } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
@@ -7,6 +7,7 @@ import colors from '../theme/colors';
 
 export default function OrderConfirmationScreen() {
   const router = useRouter();
+  const { id } = useLocalSearchParams();
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.iconCircle}>
@@ -14,6 +15,7 @@ export default function OrderConfirmationScreen() {
       </View>
 
       <Text style={styles.title}>Pedido confirmado!</Text>
+      {id ? <Text style={styles.orderId}>Pedido #{String(id).slice(-6)}</Text> : null}
       <Text style={styles.subtitle}>
         Seu pedido foi recebido e já está sendo preparado. Você pode
         acompanhar o status a qualquer momento.
@@ -26,9 +28,12 @@ export default function OrderConfirmationScreen() {
 
       <TouchableOpacity
         style={styles.button}
-        onPress={() => router.replace('/(app)/(tabs)')}
+        onPress={() => router.replace(id ? `/orders/${id}` : '/(app)/(tabs)')}
       >
-        <Text style={styles.buttonText}>Voltar para o início</Text>
+        <Text style={styles.buttonText}>{id ? 'Acompanhar pedido' : 'Voltar para o início'}</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => router.replace('/(app)/(tabs)')}>
+        <Text style={styles.homeLink}>Voltar para o início</Text>
       </TouchableOpacity>
     </SafeAreaView>
   );
@@ -64,6 +69,7 @@ const styles = StyleSheet.create({
     lineHeight: 21,
     marginTop: 10,
   },
+  orderId: { color: colors.primary, fontSize: 14, fontWeight: '700', marginTop: 8 },
   infoBox: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -91,4 +97,5 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '700',
   },
+  homeLink: { color: colors.textLight, fontSize: 13, marginTop: 18 },
 });
