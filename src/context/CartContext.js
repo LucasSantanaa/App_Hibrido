@@ -1,9 +1,13 @@
-import React, { createContext, useContext, useMemo, useState } from 'react';
+import React, { createContext, useContext, useMemo } from 'react';
+import usePersistentValue from '../hooks/usePersistentValue';
 
 const CartContext = createContext(null);
 
 export function CartProvider({ children }) {
-  const [items, setItems] = useState([]);
+  const [items, setItems, loading, storageError] = usePersistentValue(
+    'sabor-express:cart',
+    []
+  );
 
   function addToCart(product, quantity = 1) {
     setItems((current) => {
@@ -21,6 +25,19 @@ export function CartProvider({ children }) {
 
   function removeFromCart(productId) {
     setItems((current) => current.filter((item) => item.id !== productId));
+  }
+
+  function updateQuantity(productId, quantity) {
+    if (quantity < 1) {
+      removeFromCart(productId);
+      return;
+    }
+
+    setItems((current) =>
+      current.map((item) =>
+        item.id === productId ? { ...item, quantity } : item
+      )
+    );
   }
 
   function clearCart() {
@@ -41,9 +58,12 @@ export function CartProvider({ children }) {
     items,
     addToCart,
     removeFromCart,
+    updateQuantity,
     clearCart,
     total,
     itemCount,
+    loading,
+    storageError,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
