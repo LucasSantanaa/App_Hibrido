@@ -18,10 +18,21 @@ export default function LoginScreen() {
   const { signIn } = useAuth();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
 
   function handleLogin() {
-    // Mock de autenticação: qualquer preenchimento entra no app.
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim()) || password.length < 4) {
+      setError('Informe um e-mail válido e uma senha com pelo menos 4 caracteres.');
+      return;
+    }
+    setError('');
     signIn(email);
+    router.replace('/');
+  }
+
+  function handleGuestLogin() {
+    setError('');
+    signIn('');
     router.replace('/');
   }
 
@@ -72,7 +83,9 @@ export default function LoginScreen() {
           <Text style={styles.buttonText}>Entrar</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={handleLogin}>
+        {error ? <Text accessibilityRole="alert" style={styles.error}>{error}</Text> : null}
+
+        <TouchableOpacity onPress={handleGuestLogin}>
           <Text style={styles.guestText}>Entrar como convidado</Text>
         </TouchableOpacity>
       </View>
@@ -148,4 +161,5 @@ const styles = StyleSheet.create({
     marginTop: 8,
     fontSize: 14,
   },
+  error: { color: colors.danger, fontSize: 12, textAlign: 'center' },
 });

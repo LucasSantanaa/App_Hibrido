@@ -3,9 +3,9 @@ import { Redirect, Stack } from 'expo-router';
 import { useAuth } from '../../src/context/AuthContext';
 
 export default function ProtectedLayout() {
-  const { user } = useAuth();
+  const { user, loading } = useAuth();
 
-  // Protege todas as rotas do grupo (app).
+  if (loading) return null;
   if (!user) return <Redirect href="/(auth)/login" />;
 
   return <Stack screenOptions={{ headerShown: false }} />;

@@ -1,9 +1,13 @@
-import React, { createContext, useContext, useState } from 'react';
+import React, { createContext, useContext } from 'react';
+import usePersistentValue from '../hooks/usePersistentValue';
 
 const AuthContext = createContext(null);
 
 export function AuthProvider({ children }) {
-  const [user, setUser] = useState(null);
+  const [user, setUser, loading, storageError] = usePersistentValue(
+    'sabor-express:user',
+    null
+  );
 
   function signIn(email) {
     setUser({ email: email || 'convidado@saborexpress.com' });
@@ -14,7 +18,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, signIn, signOut }}>
+    <AuthContext.Provider value={{ user, signIn, signOut, loading, storageError }}>
       {children}
     </AuthContext.Provider>
   );
