@@ -8,12 +8,7 @@ import colors from '../theme/colors';
 
 export default function CartScreen() {
   const router = useRouter();
-  const { items, removeFromCart, total, clearCart } = useCart();
-
-  function handleCheckout() {
-    clearCart();
-    router.replace('/order-confirmation');
-  }
+  const { items, removeFromCart, updateQuantity, total } = useCart();
 
   if (items.length === 0) {
     return (
@@ -23,6 +18,12 @@ export default function CartScreen() {
         <Text style={styles.emptySubtitle}>
           Adicione itens no cardápio para vê-los aqui.
         </Text>
+        <TouchableOpacity
+          style={styles.browseButton}
+          onPress={() => router.replace('/(app)/(tabs)')}
+        >
+          <Text style={styles.checkoutText}>Ver receitas</Text>
+        </TouchableOpacity>
       </SafeAreaView>
     );
   }
@@ -42,7 +43,23 @@ export default function CartScreen() {
             </View>
             <View style={styles.itemInfo}>
               <Text style={styles.itemName}>{item.name}</Text>
-              <Text style={styles.itemQty}>Qtd: {item.quantity}</Text>
+              <View style={styles.quantityControls}>
+                <TouchableOpacity
+                  accessibilityLabel="Diminuir quantidade"
+                  onPress={() => updateQuantity(item.id, item.quantity - 1)}
+                  style={styles.quantityButton}
+                >
+                  <Ionicons name="remove" size={16} color={colors.text} />
+                </TouchableOpacity>
+                <Text style={styles.itemQty}>{item.quantity}</Text>
+                <TouchableOpacity
+                  accessibilityLabel="Aumentar quantidade"
+                  onPress={() => updateQuantity(item.id, item.quantity + 1)}
+                  style={styles.quantityButton}
+                >
+                  <Ionicons name="add" size={16} color={colors.text} />
+                </TouchableOpacity>
+              </View>
             </View>
             <Text style={styles.itemPrice}>
               R$ {(item.price * item.quantity).toFixed(2)}
@@ -62,7 +79,10 @@ export default function CartScreen() {
           <Text style={styles.totalLabel}>Total</Text>
           <Text style={styles.totalValue}>R$ {total.toFixed(2)}</Text>
         </View>
-        <TouchableOpacity style={styles.checkoutButton} onPress={handleCheckout}>
+        <TouchableOpacity
+          style={styles.checkoutButton}
+          onPress={() => router.push('/checkout')}
+        >
           <Text style={styles.checkoutText}>Finalizar pedido</Text>
         </TouchableOpacity>
       </View>
@@ -156,6 +176,22 @@ const styles = StyleSheet.create({
     color: colors.background,
     fontSize: 16,
     fontWeight: '700',
+  },
+  browseButton: {
+    backgroundColor: colors.primary,
+    borderRadius: 14,
+    marginTop: 22,
+    paddingHorizontal: 24,
+    paddingVertical: 14,
+  },
+  quantityControls: { alignItems: 'center', flexDirection: 'row', gap: 8, marginTop: 6 },
+  quantityButton: {
+    alignItems: 'center',
+    backgroundColor: colors.background,
+    borderRadius: 12,
+    height: 24,
+    justifyContent: 'center',
+    width: 24,
   },
   emptyContainer: {
     flex: 1,
