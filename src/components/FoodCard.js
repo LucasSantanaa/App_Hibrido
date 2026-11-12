@@ -1,14 +1,18 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { Image, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import colors from '../theme/colors';
 
 export default function FoodCard({ product, onPress }) {
   return (
     <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.85}>
-      <View style={styles.iconBox}>
-        <Ionicons name={product.icon} size={30} color={colors.primary} />
-      </View>
+      {product.image ? (
+        <Image source={{ uri: product.image }} style={styles.image} />
+      ) : (
+        <View style={styles.iconBox}>
+          <Ionicons name={product.icon} size={30} color={colors.primary} />
+        </View>
+      )}
 
       <View style={styles.info}>
         <Text style={styles.name} numberOfLines={1}>
@@ -61,6 +65,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  image: { width: 56, height: 56, borderRadius: 14, backgroundColor: colors.surface },
   info: {
     flex: 1,
   },
